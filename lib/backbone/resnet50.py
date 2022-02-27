@@ -2,7 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-from layers.batch_norm import FrozenBatchNorm2d
+from lib.layers.batch_norm import FrozenBatchNorm2d
 
 class Bottleneck(nn.Module):
     def __init__(self, in_cha, neck_cha, out_cha, stride, has_bias=False):

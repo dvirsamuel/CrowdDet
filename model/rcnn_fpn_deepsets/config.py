@@ -46,13 +46,13 @@ class Config:
     backbone_freeze_at = 2
     rpn_channel = 256
     
-    train_batch_per_gpu = 2
+    train_batch_per_gpu = 1
     momentum = 0.9
     weight_decay = 1e-4
     base_lr = 1e-3 * 1.25
 
     warm_iter = 800
-    max_epoch = 30
+    max_epoch = 50
     lr_decay = [24, 27]
     nr_images_epoch = 15000
     log_dump_interval = 20

@@ -2,8 +2,8 @@
 import torch
 
 import numpy as np
-from config import config
-from det_oprs.bbox_opr import box_overlap_opr, bbox_transform_opr, box_overlap_ignore_opr
+from model.rcnn_fpn_deepsets.config import config
+from lib.det_oprs.bbox_opr import box_overlap_opr, bbox_transform_opr, box_overlap_ignore_opr
 
 @torch.no_grad()
 def fpn_roi_target(rpn_rois, im_info, gt_boxes, top_k=1):

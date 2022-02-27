@@ -10,9 +10,10 @@ from torch.multiprocessing import Queue, Process
 
 sys.path.insert(0, '../lib')
 sys.path.insert(0, '../model')
-from data.CrowdHuman import CrowdHuman
-from utils import misc_utils, nms_utils
-from evaluate import compute_JI, compute_APMR
+from lib.data.CrowdHuman import CrowdHuman
+from lib.utils import misc_utils, nms_utils
+from lib.evaluate import compute_JI, compute_APMR
+os.environ["CUDA_VISIBLE_DEVICES"]="4"
 
 def eval_all(args, config, network):
     # model_path
@@ -38,6 +39,7 @@ def eval_all(args, config, network):
     for i in range(num_devs):
         start = i * num_image
         end = min(start + num_image, len_dataset)
+        #inference(config, network, model_file, devices[i], crowdhuman, start, end, result_queue)
         proc = Process(target=inference, args=(
                 config, network, model_file, devices[i], crowdhuman, start, end, result_queue))
         proc.start()
@@ -74,7 +76,7 @@ def inference(config, network, model_file, device, dataset, start, end, result_q
     check_point = torch.load(model_file)
     net.load_state_dict(check_point['state_dict'])
     # init data
-    dataset.records = dataset.records[start:end];
+    dataset.records = dataset.records[start:end]
     data_iter = torch.utils.data.DataLoader(dataset=dataset, shuffle=False)
     # inference
     for (image, gt_boxes, im_info, ID) in data_iter:
@@ -147,8 +149,8 @@ def run_test():
     # import libs
     model_root_dir = os.path.join('../model/', args.model_dir)
     sys.path.insert(0, model_root_dir)
-    from config import config
-    from network import Network
+    from model.rcnn_fpn_deepsets.config import config
+    from model.rcnn_fpn_deepsets.network import Network
     eval_all(args, config, Network)
 
 if __name__ == '__main__':

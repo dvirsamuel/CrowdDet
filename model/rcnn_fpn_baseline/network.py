@@ -3,15 +3,15 @@ from torch import nn
 import torch.nn.functional as F
 import numpy as np
 
-from config import config
-from backbone.resnet50 import ResNet50
-from backbone.fpn import FPN
-from module.rpn import RPN
-from layers.pooler import roi_pooler
-from det_oprs.bbox_opr import bbox_transform_inv_opr
-from det_oprs.fpn_roi_target import fpn_roi_target
-from det_oprs.loss_opr import softmax_loss, smooth_l1_loss
-from det_oprs.utils import get_padded_tensor
+from model.rcnn_fpn_baseline.config import config
+from lib.backbone.resnet50 import ResNet50
+from lib.backbone.fpn import FPN
+from lib.module.rpn import RPN
+from lib.layers.pooler import roi_pooler
+from lib.det_oprs.bbox_opr import bbox_transform_inv_opr
+from lib.det_oprs.fpn_roi_target import fpn_roi_target
+from lib.det_oprs.loss_opr import softmax_loss, smooth_l1_loss
+from lib.det_oprs.utils import get_padded_tensor
 
 class Network(nn.Module):
     def __init__(self):

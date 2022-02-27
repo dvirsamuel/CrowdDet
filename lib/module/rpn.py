@@ -3,11 +3,11 @@ from torch import nn
 import torch.nn.functional as F
 import numpy as np
 
-from config import config
-from det_oprs.anchors_generator import AnchorGenerator
-from det_oprs.find_top_rpn_proposals import find_top_rpn_proposals
-from det_oprs.fpn_anchor_target import fpn_anchor_target, fpn_rpn_reshape
-from det_oprs.loss_opr import softmax_loss, smooth_l1_loss
+from model.rcnn_fpn_deepsets.config import config
+from lib.det_oprs.anchors_generator import AnchorGenerator
+from lib.det_oprs.find_top_rpn_proposals import find_top_rpn_proposals
+from lib.det_oprs.fpn_anchor_target import fpn_anchor_target, fpn_rpn_reshape
+from lib.det_oprs.loss_opr import softmax_loss, smooth_l1_loss
 
 class RPN(nn.Module):
     def __init__(self, rpn_channel = 256):

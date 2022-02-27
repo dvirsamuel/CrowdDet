@@ -9,7 +9,7 @@ import numpy as np
 
 from .JIToolkits.JI_tools import compute_matching, get_ignores
 sys.path.insert(0, '../')
-import utils.misc_utils as misc_utils
+import lib.utils.misc_utils as misc_utils
 
 gtfile = '/data/annotation_val.odgt'
 nr_procs = 10

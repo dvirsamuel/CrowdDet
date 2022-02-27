@@ -2,11 +2,12 @@ import os
 import sys
 import argparse
 import torch
+os.environ["CUDA_VISIBLE_DEVICES"]="4"
 
 sys.path.insert(0, '../lib')
 sys.path.insert(0, '../model')
-from data.CrowdHuman import CrowdHuman
-from utils import misc_utils, SGD_bias
+from lib.data.CrowdHuman import CrowdHuman
+from lib.utils import misc_utils, SGD_bias
 
 class Train_config:
     # size
@@ -56,8 +57,11 @@ def do_train_epoch(net, data_iter, optimizer, rank, epoch, train_config):
         # collect the loss
         total_loss = sum([outputs[key].mean() for key in outputs.keys()])
         assert torch.isfinite(total_loss).all(), outputs
-        total_loss.backward()
-        optimizer.step()
+        try:
+            total_loss.backward()
+            optimizer.step()
+        except:
+            continue
         # stastic
         if rank == 0:
             if step % train_config.log_dump_interval == 0:
@@ -94,7 +98,14 @@ def train_worker(rank, train_config, network, config):
         model_file = os.path.join(train_config.model_dir,
             'dump-{}.pth'.format(train_config.resume_weights))
         check_point = torch.load(model_file, map_location=torch.device('cpu'))
-        net.load_state_dict(check_point['state_dict'])
+        net.load_state_dict(check_point['state_dict'], strict=False)
+        names = []
+        for name, params in net.named_parameters():
+            names += [name]
+            if "deepsets" in name:
+                params.requires_grad = True
+            else:
+                params.requires_grad = False
         begin_epoch = train_config.resume_weights + 1
     # using distributed data parallel
     net = torch.nn.parallel.DistributedDataParallel(net, device_ids=[rank], broadcast_buffers=False)
@@ -166,8 +177,8 @@ def run_train():
     # import libs
     model_root_dir = os.path.join('../model/', args.model_dir)
     sys.path.insert(0, model_root_dir)
-    from config import config
-    from network import Network
+    from model.rcnn_fpn_deepsets.config import config
+    from model.rcnn_fpn_deepsets.network import Network
     multi_train(args, config, Network)
 
 if __name__ == '__main__':

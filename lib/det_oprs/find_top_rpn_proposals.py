@@ -1,8 +1,8 @@
 import torch
 import torch.nn.functional as F
 
-from config import config
-from det_oprs.bbox_opr import bbox_transform_inv_opr, clip_boxes_opr, \
+from model.rcnn_fpn_deepsets.config import config
+from lib.det_oprs.bbox_opr import bbox_transform_inv_opr, clip_boxes_opr, \
     filter_boxes_opr
 from torchvision.ops import nms
 

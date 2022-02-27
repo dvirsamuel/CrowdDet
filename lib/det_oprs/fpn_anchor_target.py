@@ -1,8 +1,8 @@
 import torch
 import numpy as np
 
-from det_oprs.bbox_opr import box_overlap_opr, bbox_transform_opr
-from config import config
+from lib.det_oprs.bbox_opr import box_overlap_opr, bbox_transform_opr
+from model.rcnn_fpn_deepsets.config import config
 
 def fpn_rpn_reshape(pred_cls_score_list, pred_bbox_offsets_list):
     final_pred_bbox_offsets_list = []
